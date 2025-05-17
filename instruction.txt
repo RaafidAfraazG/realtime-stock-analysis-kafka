@@ -1,0 +1,42 @@
+Kafka Project - Setup & Run Instructions
+========================================
+
+1. Create Project Folder
+------------------------
+- Make a folder named: kafka project
+- Place your EC2 PEM key file inside it (e.g., your-key.pem)
+
+2. Launch EC2 Instance
+----------------------
+- Launch an EC2 instance (Amazon Linux 2)
+- During setup, download the PEM key
+- Install Kafka (version 2.13-3.7.2) on the instance
+- Place the Kafka folder in the EC2 home directory
+
+3. Open Two Terminals
+---------------------
+
+--- Terminal 1: Start ZooKeeper ---
+    
+    cd kafka\ project
+    chmod 400 your-key.pem (macOS/Linux only)
+
+Then:
+    ssh -i "your-key.pem" ec2-user@<your-ec2-public-dns>
+    cd kafka_2.13-3.7.2
+    bin/zookeeper-server-start.sh config/zookeeper.properties
+
+--- Terminal 2: Start Kafka Broker ---
+    cd kafka\ project
+    ssh -i "your-key.pem" ec2-user@<your-ec2-public-dns>
+    cd kafka_2.13-3.7.2
+    export KAFKA_HEAP_OPTS="-Xmx256M -Xms128M"
+    bin/kafka-server-start.sh config/server.properties
+
+4. Run Producer and Consumer
+----------------------------
+- Open `producer.py` and `consumer.py` in Google Colab (or any Python environment)
+- Run the **producer** first to send data to Kafka
+- Then run the **consumer** to receive and store data
+
+Done 🎯
